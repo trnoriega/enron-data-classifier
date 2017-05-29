@@ -159,12 +159,8 @@ def email_list_and_labels(word_dict, to_from_all):
 
 # data_text = word_dict_maker(data_emailpath_tuples, temp_save=True)
 
-with open('data/word_dict_subset.pkl', 'rb') as f:
-    data_text = pickle.load(f)
+# with open('data/word_dict_subset.pkl', 'rb') as f:
+#     data_text = pickle.load(f)
 
 #test = {key:data_text[key] for key in list(data_text.keys()[:3])}
-all_emails, labels = email_list_and_labels(data_text, 'all')
-
-from sklearn.feature_extraction.text import TfidfVectorizer
-vectorizer = TfidfVectorizer(stop_words='english', max_df=0.5)
-feature_matrix = vectorizer.fit_transform(all_emails)
+# all_emails, all_email_labels = email_list_and_labels(data_text, 'all')
