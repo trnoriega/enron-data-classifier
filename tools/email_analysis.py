@@ -23,7 +23,7 @@ def find_emailpaths():
     whether emails were to or from email address)
     """
 
-    current_path = os.path.join(os.getcwd(), 'emails_by_address')
+    current_path = os.path.join(os.getcwd(), 'data/emails_by_address')
     all_filenames = os.listdir(current_path)
     emailpath_tuples = []
 
