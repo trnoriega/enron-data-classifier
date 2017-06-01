@@ -23,6 +23,12 @@ def test_classifier(clf, dataset, feature_list, folds=1000):
     false_negatives = 0
     true_positives = 0
     false_positives = 0
+
+    # progress indicator counters
+    print 'Testing splits: '
+    count_i = 0
+    total_i = float(len(cv.split(features, labels)))
+
     for train_idx, test_idx in cv.split(features, labels):
         features_train = []
         features_test = []
@@ -34,7 +40,6 @@ def test_classifier(clf, dataset, feature_list, folds=1000):
         for jj in test_idx:
             features_test.append(features[jj])
             labels_test.append(labels[jj])
-        print '.',
 
         ### fit the classifier using training set, and test on test set
         clf.fit(features_train, labels_train)
@@ -53,7 +58,12 @@ def test_classifier(clf, dataset, feature_list, folds=1000):
                 print "All predictions should take value 0 or 1."
                 print "Evaluating performance for processed predictions:"
                 break
-            print '.',
+
+        # Progress indicator display
+        count_i += 1
+        if (count_i/total) %0.1 == 0:
+            print '.', str(count_i/total*100), '%.',
+
     try:
         total_predictions = true_negatives + false_negatives + false_positives + true_positives
         accuracy = 1.0*(true_positives + true_negatives)/total_predictions
