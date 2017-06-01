@@ -67,16 +67,20 @@ def test_classifier(clf, dataset, feature_list, folds = 1000):
         f1 = 2.0 * true_positives/(2*true_positives + false_positives+false_negatives)
         f2 = (1+2.0*2.0) * precision*recall/(4*precision + recall)
         print clf
-        print PERF_FORMAT_STRING.format(accuracy, precision, recall, f1, f2, display_precision = 5)
-        print RESULTS_FORMAT_STRING.format(total_predictions, true_positives, false_positives, false_negatives, true_negatives)
+        print PERF_FORMAT_STRING.format(accuracy, precision, recall, f1, f2, display_precision=5)
+        print RESULTS_FORMAT_STRING.format(total_predictions, true_positives, false_positives,
+                                           false_negatives, true_negatives)
         print ""
     except:
         print "Got a divide by zero when trying out:", clf
         print "Precision or recall may be undefined due to a lack of true positive predicitons."
 
-CLF_PICKLE_FILENAME = "my_classifier.pkl"
-DATASET_PICKLE_FILENAME = "my_dataset.pkl"
-FEATURE_LIST_FILENAME = "my_feature_list.pkl"
+#Change this if you don't want to store data in a separate data folder
+EXTRA_PATH = "data/"
+
+CLF_PICKLE_FILENAME = EXTRA_PATH + "my_classifier.pkl"
+DATASET_PICKLE_FILENAME = EXTRA_PATH + "my_dataset.pkl"
+FEATURE_LIST_FILENAME = EXTRA_PATH + "my_feature_list.pkl"
 
 def dump_classifier_and_data(clf, dataset, feature_list):
     with open(CLF_PICKLE_FILENAME, "w") as clf_outfile:
