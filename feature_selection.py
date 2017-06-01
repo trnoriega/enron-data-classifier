@@ -37,13 +37,18 @@ from tools.feature_format import featureFormat, targetFeatureSplit
 # features = np.array(features)
 ###
 
-def importance_plotter(features, labels, feature_names):
+def importance_plotter(features, labels, feature_names, balanced=False):
     """
     Makes a bar graph of feature importances based on ExtraTreesClassifier.
-    Returns a list with the features selected to be above the importance mean. 
+    Returns a list with the features selected to be above the importance mean.
     """
-    forest = ExtraTreesClassifier(n_estimators=500,
-                                  random_state=0)
+    if balanced:
+        forest = ExtraTreesClassifier(n_estimators=500,
+                                      random_state=0,
+                                      class_weight='balanced')
+    else:
+        forest = ExtraTreesClassifier(n_estimators=500,
+                                      random_state=0)
     forest.fit(features, labels)
     importances = forest.feature_importances_
     std = np.std([tree.feature_importances_ for tree in forest.estimators_],
