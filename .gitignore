@@ -1,9 +1,6 @@
 # project-specific #
 ####################
 
-my_classifier.pkl
-my_dataset.pkl
-my_feature_list.pkl
 word_dict_subset.pkl
 
 # vscode #
