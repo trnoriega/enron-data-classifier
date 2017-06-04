@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 """ 
     A general tool for converting data from the
     dictionary format to an (n x k) python list that's 
@@ -13,7 +11,7 @@
         key-value pair in the dict is the name
         of a feature, and its value for that person
 
-    In addition to converting a dictionary to a numpy 
+    In addition to converting a dictionary to a numpy
     array, you may want to separate the labels from the
     features--this is what targetFeatureSplit is for
 
@@ -21,7 +19,7 @@
     and the features you want to use are the person's
     salary and bonus, here's what you would do:
 
-    feature_list = ["poi", "salary", "bonus"] 
+    feature_list = ["poi", "salary", "bonus"]
     data_array = featureFormat( data_dictionary, feature_list )
     label, features = targetFeatureSplit(data_array)
 
@@ -29,11 +27,11 @@
     label is the _first_ item in feature_list--very important
     that poi is listed first!
 """
-
-
 import numpy as np
 
-def featureFormat( dictionary, features, remove_NaN=True, remove_all_zeroes=True, remove_any_zeroes=False, sort_keys = False):
+def featureFormat(dictionary, features, remove_NaN=True,
+                  remove_all_zeroes=True, remove_any_zeroes=False,
+                  sort_keys=False):
     """ convert dictionary to numpy array of features
         remove_NaN = True will convert "NaN" string to 0.0
         remove_all_zeroes = True will omit any data points for which
@@ -47,10 +45,7 @@ def featureFormat( dictionary, features, remove_NaN=True, remove_all_zeroes=True
         NOTE: first feature is assumed to be 'poi' and is not checked for
             removal for zero or missing values.
     """
-
-
     return_list = []
-
     # Key order - first branch is for Python 3 compatibility on mini-projects,
     # second branch is for compatibility on final project.
     if isinstance(sort_keys, str):
@@ -70,9 +65,11 @@ def featureFormat( dictionary, features, remove_NaN=True, remove_all_zeroes=True
                 print "error: key ", feature, " not present"
                 return
             value = dictionary[key][feature]
-            if value=="NaN" and remove_NaN:
+            if value == "NaN" and remove_NaN:
                 value = 0
-            tmp_list.append( float(value) )
+            elif value == "NaN":
+                value = np.nan
+            tmp_list.append(float(value))
 
         # Logic for deciding whether or not to add the data point.
         append = True
