@@ -27,7 +27,7 @@ def test_classifier(clf, dataset, feature_list, folds=1000):
     # progress indicator counters
     print 'Testing splits: '
     count_i = 0
-    total_i = float(len(cv.split(features, labels)))
+    total_i = float(len(list(cv.split(features, labels))))
 
     for train_idx, test_idx in cv.split(features, labels):
         features_train = []
@@ -61,8 +61,8 @@ def test_classifier(clf, dataset, feature_list, folds=1000):
 
         # Progress indicator display
         count_i += 1
-        if (count_i/total) %0.1 == 0:
-            print '.', str(count_i/total*100), '%.',
+        if (count_i/total_i) % 0.05 == 0:
+            print '.', str(int(count_i/total_i*100)), '%',
 
     try:
         total_predictions = true_negatives + false_negatives + false_positives + true_positives
