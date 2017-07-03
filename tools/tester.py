@@ -8,6 +8,7 @@
 import pickle
 from sklearn.model_selection import StratifiedShuffleSplit
 from tools.feature_format import featureFormat, targetFeatureSplit
+import os
 
 PERF_FORMAT_STRING = "\
 \tAccuracy: {:>0.{display_precision}f}\tPrecision: {:>0.{display_precision}f}\t\
@@ -81,20 +82,21 @@ def test_classifier(clf, dataset, feature_list, folds=1000):
         print "Precision or recall may be undefined due to a lack of true positive predicitons."
 
 
-#Change/uncomment this if you don't want to store data in a separate data folder
-EXTRA_PATH = "data/"
+#EXTRA_PATH specifies where to save the data
+HOME_PATH = os.path.expanduser('~')
+EXTRA_PATH = os.path.join(HOME_PATH, 'Desktop', 'raw_data', 'ml')
 
-CLF_PICKLE_FILENAME = EXTRA_PATH + "my_classifier.pkl"
-DATASET_PICKLE_FILENAME = EXTRA_PATH + "my_dataset.pkl"
-FEATURE_LIST_FILENAME = EXTRA_PATH + "my_feature_list.pkl"
+CLF_PICKLE_FILENAME = os.path.join(EXTRA_PATH, 'my_classifier.pkl')
+DATASET_PICKLE_FILENAME = os.path.join(EXTRA_PATH, 'my_dataset.pkl')
+FEATURE_LIST_FILENAME = os.path.join(EXTRA_PATH, 'my_feature_list.pkl')
 
 def dump_classifier_and_data(clf, dataset, feature_list):
     with open(CLF_PICKLE_FILENAME, "w") as clf_outfile:
-        pickle.dump(clf, clf_outfile)
+        pickle.dump(clf, clf_outfile, protocol=pickle.HIGHEST_PROTOCOL)
     with open(DATASET_PICKLE_FILENAME, "w") as dataset_outfile:
-        pickle.dump(dataset, dataset_outfile)
+        pickle.dump(dataset, dataset_outfile, protocol=pickle.HIGHEST_PROTOCOL)
     with open(FEATURE_LIST_FILENAME, "w") as featurelist_outfile:
-        pickle.dump(feature_list, featurelist_outfile)
+        pickle.dump(feature_list, featurelist_outfile, protocol=pickle.HIGHEST_PROTOCOL)
 
 def load_classifier_and_data():
     with open(CLF_PICKLE_FILENAME, "r") as clf_infile:
