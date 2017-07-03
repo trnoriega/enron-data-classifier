@@ -1,5 +1,5 @@
-""" a basic script for importing student's POI identifier,
-    and checking the results that they get from it
+""" a basic script for importing POI identifier,
+    and checking the results from it
     requires that the algorithm, dataset, and features list
     be written to my_classifier.pkl, my_dataset.pkl, and
     my_feature_list.pkl, respectively.
@@ -10,15 +10,22 @@ from sklearn.model_selection import StratifiedShuffleSplit
 from tools.feature_format import featureFormat, targetFeatureSplit
 import os
 
-PERF_FORMAT_STRING = "\
-\tAccuracy: {:>0.{display_precision}f}\tPrecision: {:>0.{display_precision}f}\t\
-Recall: {:>0.{display_precision}f}\tF1: {:>0.{display_precision}f}\tF2: {:>0.{display_precision}f}"
-RESULTS_FORMAT_STRING = "\tTotal predictions: {:4d}\tTrue positives: {:4d}\tFalse positives: {:4d}\
-\tFalse negatives: {:4d}\tTrue negatives: {:4d}"
+PERF_FORMAT_STRING = '\
+Accuracy: {:>0.{display_precision}f}\
+\nPrecision: {:>0.{display_precision}f}\
+\nRecall: {:>0.{display_precision}f}\
+\nF1: {:>0.{display_precision}f}'
+
+RESULTS_FORMAT_STRING = '\
+Total predictions: {:4d}\
+\nTrue positives: {:4d}\
+\nFalse positives: {:4d}\
+\nFalse negatives: {:4d}\
+\nTrue negatives: {:4d}'
 
 def test_classifier(clf, dataset, feature_list, folds=1000):
     data = featureFormat(dataset, feature_list, sort_keys=True)
-    labels, features = targetFeatureSplit(data)
+    labels, features = data[:, 0], data[:, 1:]
     cv = StratifiedShuffleSplit(n_splits=folds, random_state=42)
     true_negatives = 0
     false_negatives = 0
@@ -62,9 +69,10 @@ def test_classifier(clf, dataset, feature_list, folds=1000):
 
         # Progress indicator display
         count_i += 1
-        if (count_i/total_i) % 0.05 == 0:
-            print '.', str(int(count_i/total_i*100)), '%',
-
+        if (count_i/total_i)*100%5 == 0:
+            print '.', str(count_i/total_i*100), '%',
+    
+    print ''
     try:
         total_predictions = true_negatives + false_negatives + false_positives + true_positives
         accuracy = 1.0*(true_positives + true_negatives)/total_predictions
@@ -72,11 +80,14 @@ def test_classifier(clf, dataset, feature_list, folds=1000):
         recall = 1.0*true_positives/(true_positives+false_negatives)
         f1 = 2.0 * true_positives/(2*true_positives + false_positives+false_negatives)
         f2 = (1+2.0*2.0) * precision*recall/(4*precision + recall)
+        print 'ESTIMATOR:'
         print clf
-        print PERF_FORMAT_STRING.format(accuracy, precision, recall, f1, f2, display_precision=5)
+        print 'RESULTS:'
         print RESULTS_FORMAT_STRING.format(total_predictions, true_positives, false_positives,
                                            false_negatives, true_negatives)
-        print ""
+        print 'PERFORMANCE:'
+        print PERF_FORMAT_STRING.format(accuracy, precision, recall, f1, display_precision=5)
+
     except:
         print "Got a divide by zero when trying out:", clf
         print "Precision or recall may be undefined due to a lack of true positive predicitons."
@@ -108,7 +119,7 @@ def load_classifier_and_data():
     return clf, dataset, feature_list
 
 def main():
-    ### load up student's classifier, dataset, and feature_list
+    ### load classifier, dataset, and feature_list
     print 'Loading data'
     clf, dataset, feature_list = load_classifier_and_data()
     print 'Done loading'
