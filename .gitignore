@@ -1,5 +1,7 @@
 # project-specific #
 ####################
+data/intermediate/
+data/final/
 
 # vscode #
 ##########
