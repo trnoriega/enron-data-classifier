@@ -7,7 +7,7 @@
 
 import pickle
 from sklearn.model_selection import StratifiedShuffleSplit
-from tools.feature_format import featureFormat, targetFeatureSplit
+from tools.feature_format import featureFormat
 import os
 
 PERF_FORMAT_STRING = '\
